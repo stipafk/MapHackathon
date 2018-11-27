@@ -1,0 +1,12 @@
+[
+  {
+    "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [36.26404400000001, 54.520713]
+    },
+    "properties": {
+      "name": "Моссковская д. 79"
+    }
+  }
+]
