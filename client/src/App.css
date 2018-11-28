@@ -1,6 +1,35 @@
 .ol-attribution {
   display: none;
 }
+.ol-zoom {
+  bottom: 20px;
+  right: 20px;
+  left: auto;
+  top: auto;
+}
+.App {
+  position: relative;
+}
+.header {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: calc(100% - 20px);
+  margin: 10px;
+  height: 66px;
+  background: #f5f5f5;
+  border: solid 1px rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  border-radius: 10px;
+}
+.search-container {
+  position: relative;
+}
+.search {
+  position: absolute;
+  right: 15px;
+  top: 13px;
+}
 .App {
   position: absolute;
   left: 0;
@@ -59,4 +88,30 @@
 }
 .ol-popup-closer:after {
   content: "✖";
+}
+
+.modal {
+  position: absolute;
+  left: 10px;
+  top: 85px;
+  right: auto;
+  bottom: auto;
+}
+
+.modal-dialog {
+  margin: 0;
+}
+
+.mobile .modal,
+.tablet .modal {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+.mobile .modal-dialog,
+.tablet .modal-dialog,
+.mobile .modal-content,
+.tablet .modal-content {
+  height: 100%;
 }
