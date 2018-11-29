@@ -14,6 +14,7 @@ import "./App.css";
 // import Overlay from "ol/Overlay.js";
 // import Popup from "./components/Popup";
 import Modal from "./components/Modal";
+import SearchLine from "./components/SearchLine";
 
 import { Icon, Fill, Stroke, Style, Text } from "ol/style.js";
 
@@ -44,8 +45,8 @@ class App extends Component {
 
     var style = new Style({
       image: new Icon({
-        scale: 0.05,
-        src: "point.png"
+        // scale: 0.05,
+        src: "point.svg"
       }),
       fill: new Fill({
         color: "rgba(255, 255, 255, 0.6)"
@@ -57,6 +58,11 @@ class App extends Component {
       text: new Text()
     });
 
+    this.vectorSource = new VectorSource({
+      format: new GeoJSON(),
+      url: "/geo.json"
+    });
+
     this.map = new Map({
       target: "map",
       layers: [
@@ -64,10 +70,7 @@ class App extends Component {
           source: new OSM()
         }),
         new VectorLayer({
-          source: new VectorSource({
-            format: new GeoJSON(),
-            url: "/geo.json"
-          }),
+          source: that.vectorSource,
           style: function(feature) {
             // style.getText().setText(feature.get("name"));
             return style;
@@ -84,7 +87,7 @@ class App extends Component {
     this.map.on("singleclick", function(evt) {
       that.map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
         // that.overlay.setPosition(evt.coordinate);
-        that.setState({ featureInfo: { name: feature.get("name") } });
+        that.openModal(feature);
       });
     });
     this.map.on("pointermove", function(evt) {
@@ -97,12 +100,32 @@ class App extends Component {
       });
     });
   }
+  findFeatureByName = name => {
+    const features = this.vectorSource.getFeatures();
+    return features.find(feature => {
+      return feature.get("organizationFullNameAndLocation") === name;
+    });
+  };
+  openModal = feature => {
+    this.setState({
+      featureInfo: {
+        name: feature.get("accreditationBodyName"),
+        adres: feature.get("ulAddressLocation"),
+        workingSchedule: feature.get("workingSchedule"),
+        stateAccreditationEndDate: feature.get("stateAccreditationEndDate"),
+        stateAccreditationCertificateRequisites: feature.get(
+          "stateAccreditationCertificateRequisites"
+        ),
+        stateAccreditationStartDate: feature.get("stateAccreditationStartDate")
+      },
+      feature
+    });
+  };
   handeClose = () => {
     // this.overlay.setPosition(undefined);
     this.setState({ featureInfo: false });
   };
   zoomToFeature = feature => () => {
-    console.log(feature);
     var extent = feature.getGeometry().getExtent();
     this.map.getView().fit(extent, { maxZoom: 18, duration: 600 });
   };
@@ -110,27 +133,10 @@ class App extends Component {
     return (
       <div className="App">
         <header className="header">
-          <div className="search-container">
-            <div className="search">
-              <div className="input-group mb-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Ваш текст"
-                  aria-label="Ваш текст"
-                />
-                <div className="input-group-prepend">
-                  <button
-                    className="btn btn-outline-secondary"
-                    type="button"
-                    id="button-addon1"
-                  >
-                    Поиск
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+          <SearchLine
+            findFeatureByName={this.findFeatureByName}
+            openModal={this.openModal}
+          />
         </header>
         <div
           id="map"
@@ -139,7 +145,8 @@ class App extends Component {
         <Modal
           onClose={this.handeClose}
           zoom={this.zoomToFeature(this.state.feature)}
-          open={this.state.featureInfo}
+          feature={this.state.featureInfo}
+          zoomToFeature={this.zoomToFeature}
         />
       </div>
     );
