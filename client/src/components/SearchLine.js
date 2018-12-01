@@ -114,7 +114,7 @@ class SearchLine extends React.Component {
               onBlur={this.closeSearch}
             />
           </StyledSeachContainer>
-          <SearchList isMobile={isMobile} open={true || (this.state.open && this.state.filtered.length)}>
+          <SearchList isMobile={isMobile} open={this.state.open && this.state.filtered.length}>
             {this.state.filtered.length &&
               this.renderListitem(this.state.filtered)}
           </SearchList>
