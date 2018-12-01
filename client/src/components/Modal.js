@@ -12,9 +12,9 @@ class Popup extends Component {
       >
         <div className="">
           <div className="header-modal">
-            <h5 className="">
+            <StyledFeatureName>
               {this.props.feature && this.props.feature.name}
-            </h5>
+            </StyledFeatureName>
             <StyledButton
               type="button"
               className="close"
@@ -197,4 +197,11 @@ const StyledButton = styled.button`
     font-weight: normal;
   }
 `;
+
+const StyledFeatureName = styled.h5`
+  &::first-letter {
+    text-transform: uppercase;
+  }
+`;
+
 export default Popup;

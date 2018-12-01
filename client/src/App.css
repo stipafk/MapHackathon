@@ -21,11 +21,7 @@
 .search-container {
   position: relative;
 }
-.search {
-  position: relative;
-  left: 30px;
-  top: 23px;
-}
+
 .App {
   position: absolute;
   left: 0;
@@ -152,12 +148,6 @@
 .mobile .modal-content,
 .tablet .modal-content {
   height: 100%;
-}
-
-.mobile .search {
-  top: 0;
-  left: 17px;
-  right: 0;
 }
 
 .mobile .header {

@@ -87,7 +87,7 @@ class SearchLine extends React.Component {
   render() {
     return (
       <StyledContainer isMobile={isMobile}>
-        <div className="search">
+        <StyledSearch isMobile={isMobile}>
           <StyledSeachContainer>
             <SearchIcon>
               <svg
@@ -118,7 +118,7 @@ class SearchLine extends React.Component {
             {this.state.filtered.length &&
               this.renderListitem(this.state.filtered)}
           </SearchList>
-        </div>
+        </StyledSearch>
       </StyledContainer>
     );
   }
@@ -179,6 +179,14 @@ const SearchList = styled.div`
   border-radius: 3px;
   max-height: ${p => p.isMobile ? window.innerHeight - 56 - 17 * 3 : 400}px;
   overflow: auto;
+  overflow-x: hidden;
+`;
+
+const StyledSearch = styled.div`
+  position: relative;
+  top: ${p => p.isMobile ? 0 : 23}px;
+  left: ${p => p.isMobile ? 17 : 30}px;
+  right: ${p => p.isMobile && "0"};
 `;
 
 const StyledContainer = styled.div`
@@ -186,13 +194,15 @@ const StyledContainer = styled.div`
   width: ${p => (p.isMobile ? "calc(80% - 40px)" : "100%")};
   max-width: 460px;
   ${p => p.isMobile && "top: 17px;"}
-  ${p =>
-    p.isMobile &&
-    css`
-      .search > div {
+  ${StyledSearch} {
+    ${p => p.isMobile  && css`
+      > div {
         width: 100%;
-      }
-    `}
+      }`
+    }
+    }
 `;
+
+
 
 export default SearchLine;
