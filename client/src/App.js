@@ -4,6 +4,7 @@ import device from "current-device";
 import "ol/ol.css";
 import { Map, View } from "ol";
 import { fromLonLat } from "ol/proj";
+import Feature from "ol/Feature";
 import TileLayer from "ol/layer/Tile";
 import GeoJSON from "ol/format/GeoJSON";
 import OSM from "ol/source/OSM";
@@ -15,8 +16,9 @@ import "./App.css";
 // import Popup from "./components/Popup";
 import Modal from "./components/Modal";
 import SearchLine from "./components/SearchLine";
+import Geolocation from "./components/Geolocation";
 
-import { Icon, Fill, Stroke, Style, Text } from "ol/style.js";
+import { Icon, Circle, Fill, Stroke, Style, Text } from "ol/style.js";
 
 class App extends Component {
   constructor(props) {
@@ -63,6 +65,34 @@ class App extends Component {
       url: "/geo.json"
     });
 
+    var accuracyFeature = new Feature();
+    this.accuracyFeature = accuracyFeature;
+
+    var positionFeature = new Feature();
+    this.positionFeature = positionFeature;
+
+    positionFeature.setStyle(
+      new Style({
+        image: new Circle({
+          radius: 6,
+          fill: new Fill({
+            color: "#3399CC"
+          }),
+          stroke: new Stroke({
+            color: "#fff",
+            width: 2
+          })
+        })
+      })
+    );
+
+    var geoLayer = new VectorLayer({
+      source: new VectorSource({
+        features: [accuracyFeature, positionFeature]
+      })
+    });
+    this.geoLayer = geoLayer;
+
     this.map = new Map({
       target: "map",
       layers: [
@@ -75,7 +105,8 @@ class App extends Component {
             // style.getText().setText(feature.get("name"));
             return style;
           }
-        })
+        }),
+        geoLayer
       ],
       // overlays: [this.overlay],
       view: new View({
@@ -85,9 +116,11 @@ class App extends Component {
     });
 
     this.map.on("singleclick", function(evt) {
-      that.map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
+      that.map.forEachFeatureAtPixel(evt.pixel, function(feature) {
         // that.overlay.setPosition(evt.coordinate);
-        that.openModal(feature);
+        if (feature.values_.accreditationBodyName) {
+          that.openModal(feature);
+        }
       });
     });
     this.map.on("pointermove", function(evt) {
@@ -95,7 +128,9 @@ class App extends Component {
 
       that.map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
         if (!that.state.cursor) {
-          that.setState({ cursor: true, feature });
+          if (feature && feature.values_.accreditationBodyName) {
+            that.setState({ cursor: true, feature });
+          }
         }
       });
     });
@@ -136,6 +171,12 @@ class App extends Component {
           <SearchLine
             findFeatureByName={this.findFeatureByName}
             openModal={this.openModal}
+          />
+          <Geolocation
+            map={this.map}
+            positionFeature={this.positionFeature}
+            accuracyFeature={this.accuracyFeature}
+            geoLayer={this.geoLayer}
           />
         </header>
         <div
