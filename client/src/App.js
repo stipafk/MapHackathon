@@ -161,6 +161,9 @@ class App extends Component {
     this.setState({ featureInfo: false });
   };
   zoomToFeature = feature => () => {
+    if (device.type != "desktop") {
+      this.handeClose();
+    }
     var extent = feature.getGeometry().getExtent();
     this.map.getView().fit(extent, { maxZoom: 18, duration: 600 });
   };
