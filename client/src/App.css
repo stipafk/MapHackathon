@@ -151,3 +151,19 @@
 .tablet .modal-content {
   height: 100%;
 }
+
+
+.mobile .search {
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.mobile .header {
+  width: 100%;
+}
+
+
+.mobile .search-container {
+  width: 80%;
+}

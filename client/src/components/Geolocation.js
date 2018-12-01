@@ -3,6 +3,8 @@ import styled from "styled-components";
 import GeolocationOl from "ol/Geolocation";
 import Point from "ol/geom/Point";
 
+import device from "current-device";
+
 class Geolocation extends Component {
   state = {
     status: false
@@ -40,7 +42,7 @@ class Geolocation extends Component {
   };
   render() {
     return (
-      <ContainerGeolocation onClick={this.changeStatus}>
+      <ContainerGeolocation onClick={this.changeStatus} isMobile={device.type !== "desktop"}>
         <svg
           width="104"
           height="104"
@@ -117,8 +119,8 @@ class Geolocation extends Component {
 const ContainerGeolocation = styled.div`
   cursor: pointer;
   position: absolute;
-  right: 30px;
-  top: 6px;
+  right: ${p => p.isMobile ? -15 : 30}px;
+  top: ${p => p.isMobile ? -17 : 6}px;
   opacity: 0.9;
   &:hover {
     opacity: 1;

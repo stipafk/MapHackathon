@@ -2,7 +2,9 @@ import React from "react";
 import { GEO_ARRAY } from "../constants/geoarray";
 import uuid from "uuid/v4";
 
-import styled from "styled-components";
+import device from "current-device";
+
+import styled, {css} from "styled-components";
 
 class SearchLine extends React.Component {
   state = {
@@ -74,7 +76,7 @@ class SearchLine extends React.Component {
 
   render() {
     return (
-      <div className="search-container">
+      <StyledContainer isMobile={device.type !== "desktop"}>
         <div className="search">
           <StyledSeachContainer>
             <SearchIcon>
@@ -107,7 +109,7 @@ class SearchLine extends React.Component {
               this.renderListitem(this.state.filtered)}
           </SearchList>
         </div>
-      </div>
+      </StyledContainer>
     );
   }
 }
@@ -166,6 +168,16 @@ const SearchList = styled.div`
   border-radius: 3px;
   max-height: 400px;
   overflow: auto;
+`;
+
+const StyledContainer = styled.div`
+  position: relative;
+  width: ${p => p.isMobile ? "80%" : "100%"};
+  ${p => p.isMobile && css`
+    .search > div {
+      width: 100%;
+    }
+    `}
 `;
 
 export default SearchLine;
