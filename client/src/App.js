@@ -161,7 +161,7 @@ class App extends Component {
     this.setState({ featureInfo: false });
   };
   zoomToFeature = feature => () => {
-    if (device.type != "desctop") {
+    if (device.type != "desktop") {
       this.handeClose();
     }
     var extent = feature.getGeometry().getExtent();
