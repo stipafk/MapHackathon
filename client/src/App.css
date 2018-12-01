@@ -144,6 +144,8 @@
   right: 0;
   bottom: 0;
   left: 0;
+  overflow: auto;
+  width: unset !important;
 }
 .mobile .modal-dialog,
 .tablet .modal-dialog,
@@ -164,4 +166,14 @@
 
 .mobile .search-container {
   width: 80%;
+}
+
+.mobile button.close {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+}
+
+.mobile .header-modal {
+  margin-right: 60px;
 }
