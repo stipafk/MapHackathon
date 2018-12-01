@@ -2,39 +2,62 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import GeolocationOl from "ol/Geolocation";
 import Point from "ol/geom/Point";
+import Feature from "ol/Feature";
 
 class Geolocation extends Component {
   state = {
-    status: false
+    status: false,
+    isZoom: false
   };
   changeStatus = () => {
     const that = this;
     if (!this.state.status) {
       if (navigator.geolocation) {
         this.props.geoLayer.setVisible(true);
-        var geolocation = new GeolocationOl({
-          projection: that.props.map.getView().getProjection()
-        });
-        geolocation.setTracking(true);
-        geolocation.on("change:accuracyGeometry", function() {
-          that.props.accuracyFeature.setGeometry(
-            geolocation.getAccuracyGeometry()
-          );
-        });
-        geolocation.on("change:position", function() {
-          var coordinates = geolocation.getPosition();
-          that.props.positionFeature.setGeometry(
-            coordinates ? new Point(coordinates) : null
-          );
-        });
-        this.setState({
-          status: true
-        });
+
+        if (!that.geolocation) {
+          that.geolocation = new GeolocationOl({
+            projection: that.props.map.getView().getProjection()
+          });
+          that.geolocation.setTracking(true);
+          that.geolocation.on("change:accuracyGeometry", function() {
+            that.props.accuracyFeature.setGeometry(
+              that.geolocation.getAccuracyGeometry()
+            );
+          });
+          that.geolocation.on("change:position", function() {
+            var coordinates = that.geolocation.getPosition();
+            that.props.positionFeature.setGeometry(
+              coordinates ? new Point(coordinates) : null
+            );
+
+            if (!that.state.isZoom) {
+              var extent = that.props.positionFeature.getGeometry().getExtent();
+              that.props.map
+                .getView()
+                .fit(extent, { maxZoom: 18, duration: 600 });
+              that.setState({ isZoom: true, status: true });
+            }
+          });
+          this.setState({
+            status: true,
+            isZoom: false
+          });
+        } else {
+          if (!that.state.isZoom) {
+            var extent = that.props.positionFeature.getGeometry().getExtent();
+            that.props.map
+              .getView()
+              .fit(extent, { maxZoom: 18, duration: 600 });
+            that.setState({ isZoom: true, status: true });
+          }
+        }
       }
     } else {
       this.props.geoLayer.setVisible(false);
       this.setState({
-        status: false
+        status: false,
+        isZoom: false
       });
     }
   };
