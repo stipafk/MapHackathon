@@ -155,8 +155,8 @@ class Popup extends Component {
                   Срок свидетельства о государственной аккредитации:
                 </StyledLabel>
                 {`${this.props.feature &&
-                  this.props.feature.stateAccreditationEndDate} - ${this.props
-                  .feature && this.props.feature.stateAccreditationStartDate}`}
+                  this.props.feature.stateAccreditationStartDate} - ${this.props
+                  .feature && this.props.feature.stateAccreditationEndDate}`}
               </div>
             </div>
           </div>

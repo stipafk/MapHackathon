@@ -46,7 +46,7 @@ class App extends Component {
     var style = new Style({
       image: new Icon({
         // scale: 0.05,
-        src: "point.svg"
+        src: "marker.svg"
       }),
       fill: new Fill({
         color: "rgba(255, 255, 255, 0.6)"
@@ -109,7 +109,7 @@ class App extends Component {
   openModal = feature => {
     this.setState({
       featureInfo: {
-        name: feature.get("accreditationBodyName"),
+        name: feature.get("organizationFullNameAndLocation"),
         adres: feature.get("ulAddressLocation"),
         workingSchedule: feature.get("workingSchedule"),
         stateAccreditationEndDate: feature.get("stateAccreditationEndDate"),
