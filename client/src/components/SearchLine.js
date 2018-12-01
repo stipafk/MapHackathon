@@ -13,7 +13,9 @@ const SEARCH_LIST_MAX_WIDTH = 460;
 const calculateWidth = () => {
   let calculatedWidth = window.innerWidth - 17 * 2;
 
-  return calculatedWidth > SEARCH_LIST_MAX_WIDTH ? SEARCH_LIST_MAX_WIDTH : calculatedWidth; 
+  return calculatedWidth > SEARCH_LIST_MAX_WIDTH
+    ? SEARCH_LIST_MAX_WIDTH
+    : calculatedWidth;
 };
 
 class SearchLine extends React.Component {
@@ -61,7 +63,11 @@ class SearchLine extends React.Component {
     var that = this;
     return data.map(feature => {
       return (
-        <StyledListItem isMobile={isMobile} key={uuid()} onClick={that.selectItem(feature)}>
+        <StyledListItem
+          isMobile={isMobile}
+          key={uuid()}
+          onClick={that.selectItem(feature)}
+        >
           {feature.properties.ulAddressLocation}
           <ArrowRight>
             <svg
@@ -106,6 +112,9 @@ class SearchLine extends React.Component {
               </svg>
             </SearchIcon>
             <input
+              ref={ref => {
+                this.searchRef = ref;
+              }}
               type="text"
               placeholder="Ваш текст"
               value={this.state.value}
@@ -114,7 +123,10 @@ class SearchLine extends React.Component {
               onBlur={this.closeSearch}
             />
           </StyledSeachContainer>
-          <SearchList isMobile={isMobile} open={this.state.open && this.state.filtered.length}>
+          <SearchList
+            isMobile={isMobile}
+            open={this.state.open && this.state.filtered.length}
+          >
             {this.state.filtered.length &&
               this.renderListitem(this.state.filtered)}
           </SearchList>
@@ -177,15 +189,15 @@ const SearchList = styled.div`
   background: white;
   border: 1px solid #ced4da;
   border-radius: 3px;
-  max-height: ${p => p.isMobile ? window.innerHeight - 56 - 17 * 3 : 400}px;
+  max-height: ${p => (p.isMobile ? window.innerHeight - 56 - 17 * 3 : 400)}px;
   overflow: auto;
   overflow-x: hidden;
 `;
 
 const StyledSearch = styled.div`
   position: relative;
-  top: ${p => p.isMobile ? 0 : 23}px;
-  left: ${p => p.isMobile ? 17 : 30}px;
+  top: ${p => (p.isMobile ? 0 : 23)}px;
+  left: ${p => (p.isMobile ? 17 : 30)}px;
   right: ${p => p.isMobile && "0"};
 `;
 
@@ -195,14 +207,14 @@ const StyledContainer = styled.div`
   max-width: 460px;
   ${p => p.isMobile && "top: 17px;"}
   ${StyledSearch} {
-    ${p => p.isMobile  && css`
-      > div {
-        width: 100%;
-      }`
-    }
-    }
+    ${p =>
+      p.isMobile &&
+      css`
+        > div {
+          width: 100%;
+        }
+      `}
+  }
 `;
-
-
 
 export default SearchLine;

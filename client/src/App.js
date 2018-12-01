@@ -156,6 +156,12 @@ class App extends Component {
       feature
     });
   };
+  backToSeach = () => {
+    if (this.searchRef) {
+      this.handeClose();
+      this.searchRef.searchRef.focus();
+    }
+  };
   handeClose = () => {
     // this.overlay.setPosition(undefined);
     this.setState({ featureInfo: false });
@@ -172,6 +178,9 @@ class App extends Component {
       <div className="App">
         <header className="header">
           <SearchLine
+            ref={ref => {
+              this.searchRef = ref;
+            }}
             findFeatureByName={this.findFeatureByName}
             openModal={this.openModal}
           />
@@ -188,6 +197,7 @@ class App extends Component {
         />
         <Modal
           onClose={this.handeClose}
+          backToSeach={this.backToSeach}
           zoom={this.zoomToFeature(this.state.feature)}
           feature={this.state.featureInfo}
           zoomToFeature={this.zoomToFeature}
