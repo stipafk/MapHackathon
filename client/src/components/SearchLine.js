@@ -4,7 +4,7 @@ import uuid from "uuid/v4";
 
 import device from "current-device";
 
-import styled, {css} from "styled-components";
+import styled, { css } from "styled-components";
 
 class SearchLine extends React.Component {
   state = {
@@ -172,11 +172,15 @@ const SearchList = styled.div`
 
 const StyledContainer = styled.div`
   position: relative;
-  width: ${p => p.isMobile ? "80%" : "100%"};
-  ${p => p.isMobile && css`
-    .search > div {
-      width: 100%;
-    }
+  width: ${p => (p.isMobile ? "calc(80% - 25px)" : "100%")};
+  max-width: 460px;
+  ${p => p.isMobile && "top: 17px;"}
+  ${p =>
+    p.isMobile &&
+    css`
+      .search > div {
+        width: 100%;
+      }
     `}
 `;
 

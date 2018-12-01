@@ -65,7 +65,10 @@ class Geolocation extends Component {
   };
   render() {
     return (
-      <ContainerGeolocation onClick={this.changeStatus} isMobile={device.type !== "desktop"}>
+      <ContainerGeolocation
+        onClick={this.changeStatus}
+        isMobile={device.type !== "desktop"}
+      >
         <svg
           width="104"
           height="104"
@@ -142,8 +145,8 @@ class Geolocation extends Component {
 const ContainerGeolocation = styled.div`
   cursor: pointer;
   position: absolute;
-  right: ${p => p.isMobile ? -15 : 30}px;
-  top: ${p => p.isMobile ? -17 : 6}px;
+  right: ${p => (p.isMobile ? 0 : 30)}px;
+  top: ${p => (p.isMobile ? 0 : 6)}px;
   opacity: 0.8;
   &:hover {
     opacity: 1;
