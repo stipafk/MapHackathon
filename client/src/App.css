@@ -22,7 +22,7 @@
   position: relative;
 }
 .search {
-  position: absolute;
+  position: relative;
   left: 30px;
   top: 23px;
 }

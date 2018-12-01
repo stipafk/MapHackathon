@@ -6,6 +6,16 @@ import device from "current-device";
 
 import styled, { css } from "styled-components";
 
+const isMobile = device.type !== "desktop";
+
+const SEARCH_LIST_MAX_WIDTH = 460;
+
+const calculateWidth = () => {
+  let calculatedWidth = window.innerWidth - 17 * 2;
+
+  return calculatedWidth > SEARCH_LIST_MAX_WIDTH ? SEARCH_LIST_MAX_WIDTH : calculatedWidth; 
+};
+
 class SearchLine extends React.Component {
   state = {
     open: false,
@@ -51,7 +61,7 @@ class SearchLine extends React.Component {
     var that = this;
     return data.map(feature => {
       return (
-        <StyledListItem key={uuid()} onClick={that.selectItem(feature)}>
+        <StyledListItem isMobile={isMobile} key={uuid()} onClick={that.selectItem(feature)}>
           {feature.properties.ulAddressLocation}
           <ArrowRight>
             <svg
@@ -76,7 +86,7 @@ class SearchLine extends React.Component {
 
   render() {
     return (
-      <StyledContainer isMobile={device.type !== "desktop"}>
+      <StyledContainer isMobile={isMobile}>
         <div className="search">
           <StyledSeachContainer>
             <SearchIcon>
@@ -104,7 +114,7 @@ class SearchLine extends React.Component {
               onBlur={this.closeSearch}
             />
           </StyledSeachContainer>
-          <SearchList open={this.state.open && this.state.filtered.length}>
+          <SearchList isMobile={isMobile} open={true || (this.state.open && this.state.filtered.length)}>
             {this.state.filtered.length &&
               this.renderListitem(this.state.filtered)}
           </SearchList>
@@ -145,6 +155,7 @@ const EmptyFilter = styled.div`
 
 const StyledListItem = styled.div`
   position: relative;
+  width: ${p => p.isMobile && `${calculateWidth()}px`};
   text-align: initial;
   padding: 20px;
   padding-right: 50px;
@@ -159,20 +170,20 @@ const SearchList = styled.div`
   display: ${p => (p.open ? "inline-block" : "none")};
   position: absolute;
   top: 75px;
-  width: 460px;
+  width: ${p => p.isMobile && calculateWidth()}px !important;
   min-height: 76px;
   left: 0px;
   text-align: center;
   background: white;
   border: 1px solid #ced4da;
   border-radius: 3px;
-  max-height: 400px;
+  max-height: ${p => p.isMobile ? window.innerHeight - 56 - 17 * 3 : 400}px;
   overflow: auto;
 `;
 
 const StyledContainer = styled.div`
   position: relative;
-  width: ${p => (p.isMobile ? "calc(80% - 25px)" : "100%")};
+  width: ${p => (p.isMobile ? "calc(80% - 40px)" : "100%")};
   max-width: 460px;
   ${p => p.isMobile && "top: 17px;"}
   ${p =>
